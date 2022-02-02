@@ -16,45 +16,36 @@ def createGraph(v, add_name=""):
     if type(v) == ast.FunctionDef:
         names[curNum] = "Function:" + v.name
         g.add_node(curNum)
-        numNode1 = createGraph(v.args)
-        g.add_edge(curNum, numNode1)
+        g.add_edge(curNum, createGraph(v.args))
         for u in v.body:
-            numNode2 = createGraph(u)
-            g.add_edge(curNum, numNode2)
+            g.add_edge(curNum, createGraph(u))
     elif type(v) == ast.arguments:
         names[curNum] = "Args"
         for u in v.args:
-            numNode = createGraph(u)
-            g.add_edge(curNum, numNode)
+            g.add_edge(curNum, createGraph(u))
     elif type(v) == ast.arg:
         names[curNum] = str(v.arg)
         g.add_node(curNum)
     elif type(v) == ast.If:
         names[curNum] = "If"
-        numNode1 = createGraph(v.test)
-        g.add_edge(curNum, numNode1)
+        g.add_edge(curNum, createGraph(v.test))
         numNodeBody = num
         num += 1
         names[numNodeBody] = "Body"
         g.add_edge(curNum, numNodeBody)
         for u in v.body:
-            numNode2 = createGraph(u)
-            g.add_edge(numNodeBody, numNode2)
+            g.add_edge(numNodeBody, createGraph(u))
         numNodeElse = num
         num += 1
         names[numNodeElse] = "else"
         g.add_edge(curNum, numNodeElse)
         for u in v.orelse:
-            numNode3 = createGraph(u)
-            g.add_edge(numNodeElse, numNode3)
+            g.add_edge(numNodeElse, createGraph(u))
     elif type(v) == ast.Compare:
         names[curNum] = "Compare"
-        numNode1 = createGraph(v.left, "left: ")
-        g.add_edge(curNum, numNode1)
-        numNode2 = createGraph(v.ops[0], "op: ")
-        g.add_edge(curNum, numNode2)
-        numNode3 = createGraph(v.comparators[0], "right: ")
-        g.add_edge(curNum, numNode3)
+        g.add_edge(curNum, createGraph(v.left, "left: "))
+        g.add_edge(curNum, createGraph(v.ops[0], "op: "))
+        g.add_edge(curNum, createGraph(v.comparators[0], "right: "))
     elif type(v) == ast.Constant:
         names[curNum] = add_name + str(v.value)
         g.add_node(curNum)
@@ -63,73 +54,57 @@ def createGraph(v, add_name=""):
         g.add_node(curNum)
     elif type(v) == ast.Return:
         names[curNum] = "Return"
-        numNode = createGraph(v.value)
-        g.add_edge(curNum, numNode)
+        g.add_edge(curNum, createGraph(v.value))
     elif type(v) == ast.List:
         names[curNum] = "List"
         for u in v.elts:
-            numNode = createGraph(u)
-            g.add_edge(curNum, numNode)
+            g.add_edge(curNum, createGraph(u))
     elif type(v) == ast.Assign:
         names[curNum] = add_name + "="
         for u in v.targets:
-            numNode1 = createGraph(u, "left: ")
-            g.add_edge(curNum, numNode1)
-        numNode2 = createGraph(v.value, "right: ")
-        g.add_edge(curNum, numNode2)
+            g.add_edge(curNum, createGraph(u, "left: "))
+        g.add_edge(curNum, createGraph(v.value, "right: "))
     elif type(v) == ast.BinOp:
         names[curNum] = add_name + "BinOp"
-        numNode1 = createGraph(v.left, "left: ")
-        g.add_edge(curNum, numNode1)
-        numNode2 = createGraph(v.op, "op: ")
-        g.add_edge(curNum, numNode2)
-        numNode3 = createGraph(v.right, "right: ")
-        g.add_edge(curNum, numNode3)
+        g.add_edge(curNum, createGraph(v.left, "left: "))
+        g.add_edge(curNum, createGraph(v.op, "op: "))
+        g.add_edge(curNum, createGraph(v.right, "right: "))
     elif type(v) == ast.Call:
         names[curNum] = "Call function"
-        numNode1 = createGraph(v.func)
-        g.add_edge(curNum, numNode1)
+        g.add_edge(curNum, createGraph(v.func))
         numNodeArgs = num
         num += 1
         names[numNodeArgs] = "Args"
         g.add_edge(curNum, numNodeArgs)
         for u in v.args:
-            numNode2 = createGraph(u)
-            g.add_edge(numNodeArgs, numNode2)
+            g.add_edge(numNodeArgs, createGraph(u))
     elif type(v) == ast.Attribute:
         names[curNum] = "Attribute"
-        numNode1 = createGraph(v.value)
-        g.add_edge(curNum, numNode1)
+        g.add_edge(curNum, createGraph(v.value))
         numNode2 = num
         num += 1
         names[numNode2] = str(v.attr)
         g.add_edge(curNum, numNode2)
     elif type(v) == ast.Subscript:
         names[curNum] = "Subscript"
-        numNode1 = createGraph(v.value, "name: ")
-        g.add_edge(curNum, numNode1)
-        numNode2 = createGraph(v.slice, "ind: ")
-        g.add_edge(curNum, numNode2)
+        g.add_edge(curNum, createGraph(v.value, "name: "))
+        g.add_edge(curNum, createGraph(v.slice, "ind: "))
     elif type(v) == ast.UnaryOp:
         if type(v.op) == ast.USub:
             curNum = createGraph(v.operand, add_name + "-")
     elif type(v) == ast.Expr:
         names[curNum] = "Expr"
-        numNode = createGraph(v.value)
-        g.add_edge(curNum, numNode)
+        g.add_edge(curNum, createGraph(v.value))
     elif type(v) == ast.For:
         names[curNum] = "for"
-        numNodeVar = createGraph(v.target)
-        g.add_edge(curNum, numNodeVar)
-        numNodeIter = createGraph(v.iter)
-        g.add_edge(curNum, numNodeIter)
+        g.add_edge(curNum, createGraph(v.target))
+        g.add_edge(curNum, createGraph(v.iter))
         numNodeBody = num
         num += 1
         names[numNodeBody] = "Body"
         g.add_edge(curNum, numNodeBody)
         for u in v.body:
-            numNode = createGraph(u)
-            g.add_edge(numNodeBody, numNode)
+            g.add_edge(numNodeBody, createGraph(u))
     elif type(v) == ast.LtE:
         names[curNum] = add_name + "<="
         g.add_node(curNum)
