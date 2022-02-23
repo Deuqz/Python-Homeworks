@@ -7,5 +7,4 @@ COPY Hard.py /hw2/Hard.py
 COPY artifacts/table_and_picture.tex /hw2/artifacts/table_and_picture.tex
 RUN apt-get update && apt-get install -y python3 && apt-get install -y python3-pip && apt-get install -y texlive-latex-extra
 WORKDIR /hw2/
-CMD ["bash"]
-#CMD ["python3", "Hard.py"]
+CMD ["python3", "Hard.py"]
