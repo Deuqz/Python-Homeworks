@@ -2,9 +2,10 @@ FROM ubuntu:16.04
 ENV DEBIAN_FRONTEND noninteractive
 RUN ["mkdir", "/hw2"]
 RUN ["mkdir", "/hw2/artifacts"]
+COPY artifacts/graph.png /hw2/artifacts/graph.png
 COPY Hard.py /hw2/Hard.py
 COPY artifacts/table_and_picture.tex /hw2/artifacts/table_and_picture.tex
-COPY artifacts/graph.png /hw2/artifacts/graph.png
 RUN apt-get update && apt-get install -y python3 && apt-get install -y python3-pip && apt-get install -y texlive-latex-extra
 WORKDIR /hw2/
-CMD ["python3", "Hard.py"]
+CMD ["bash"]
+#CMD ["python3", "Hard.py"]

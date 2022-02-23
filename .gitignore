@@ -1,0 +1,7 @@
+*\.idea*
+*__pycache__*
+*.aux
+*.log
+*env*
+*main*
+show_graph_lib*
