@@ -1,4 +1,4 @@
-from Easy import MatrixE
+from Easy import MatrixEasy
 
 
 class Hasher:
@@ -25,11 +25,11 @@ class Hasher:
         return h
 
 
-class MatrixH(MatrixE, Hasher):
+class MatrixHard(MatrixEasy, Hasher):
     _matrix_hashes = dict()
 
     def __matmul__(self, other):
         h1, h2 = self.__hash__(), other.__hash__()
         if (h1, h2) not in self._matrix_hashes:
-            self._matrix_hashes[(h1, h2)] = super(MatrixH, self).__matmul__(other)
+            self._matrix_hashes[(h1, h2)] = super(MatrixHard, self).__matmul__(other)
         return self._matrix_hashes[(h1, h2)]

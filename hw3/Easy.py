@@ -1,4 +1,4 @@
-class MatrixE:
+class MatrixEasy:
     @staticmethod
     def dimIsCorrect(matr):
         dim = len(matr[0])
@@ -28,14 +28,14 @@ class MatrixE:
             raise RuntimeError("Different dimensions")
         new_matrix = [[a + b for (a, b) in zip(rowS, rowO)]
                       for (rowS, rowO) in zip(self.matrix, other.matrix)]
-        return MatrixE(new_matrix)
+        return MatrixEasy(new_matrix)
 
     def __mul__(self, other):
         if not self.equalDimensions(self.matrix, other.matrix):
             raise RuntimeError("Different dimensions")
         new_matrix = [[a * b for (a, b) in zip(rowS, rowO)]
                       for (rowS, rowO) in zip(self.matrix, other.matrix)]
-        return MatrixE(new_matrix)
+        return MatrixEasy(new_matrix)
 
     def __matmul__(self, other):
         if len(self.matrix[0]) != len(other.matrix):
@@ -45,7 +45,7 @@ class MatrixE:
             for j in range(len(other.matrix[0])):
                 for k in range(len(self.matrix[0])):
                     new_matrix[i][j] += self.matrix[i][k] * other.matrix[k][j]
-        return MatrixE(new_matrix)
+        return MatrixEasy(new_matrix)
 
     def __len__(self):
         return len(self.matrix)

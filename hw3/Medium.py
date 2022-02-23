@@ -16,16 +16,16 @@ class GetSetClass:
         self._matrix = np.asarray(matr)
 
 
-class MatrixM(np.lib.mixins.NDArrayOperatorsMixin, Writer, GetSetClass):
+class MatrixMedium(np.lib.mixins.NDArrayOperatorsMixin, Writer, GetSetClass):
     def __init__(self, matr):
         self._matrix = np.asarray(matr)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
         for x in inputs:
-            if not isinstance(x, MatrixM):
+            if not isinstance(x, MatrixMedium):
                 return NotImplemented
 
-        inputs = tuple(x.matrix if isinstance(x, MatrixM) else x
+        inputs = tuple(x.matrix if isinstance(x, MatrixMedium) else x
                        for x in inputs)
         result = getattr(ufunc, method)(*inputs, **kwargs)
 
