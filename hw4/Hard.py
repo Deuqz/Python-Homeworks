@@ -23,12 +23,15 @@ def main_process():
     main, b_producer = multiprocessing.Pipe(duplex=False)
     multiprocessing.Process(target=process_A, name="process_A", args=(a, str_queue), daemon=True).start()
     multiprocessing.Process(target=process_B, name="process_B", args=(b_consumer, b_producer), daemon=True).start()
-    open("artifacts/Hard_stdin.txt", 'w').close()
+    open("artifacts/Hard_stdin.txt", 'w').close()   # Очищаю файлы, если там что-то было
     open("artifacts/Hard_stdout.txt", 'w').close()
+    count = 0
     for str in stdin.readlines():
         with open("artifacts/Hard_stdin.txt", 'a') as f:
             f.write(f"{str[:-1]} | time:{time.time()}\n")
         str_queue.put(str)
+        count += 1
+    for i in range(count):
         new_str = main.recv()
         with open("artifacts/Hard_stdout.txt", 'a') as f:
             f.write(f"{new_str[:-1]} | time:{time.time()}\n")
